@@ -14,6 +14,7 @@ public class GameController : MonoBehaviour
     public float spawnInterval;
     public GameObject[] EnemyTypes;
     public GameObject spawnLocation;
+    public GameObject baseObject;
 
     private int enemiesPerWave;
     private int waveNumber;
@@ -31,6 +32,7 @@ public class GameController : MonoBehaviour
         originalSpawnInterval = spawnInterval;
         spawnInterval = 0;
         spawnIndex = 0;
+        FindObjectOfType<Wall>().GetComponent<Wall>().SetHp(baseWallHp);
     }
 
     // Update is called once per frame
@@ -45,7 +47,6 @@ public class GameController : MonoBehaviour
             {
                 GameObject enemy = Instantiate(EnemyTypes[waveNumber], new Vector2(spawnLocation.transform.position.x, spawnLocation.transform.position.y), Quaternion.identity);
                 enemy.GetComponent<Enemy>().SetFinalWaypoint(finalWaypoints[spawnIndex]);
-                enemy.GetComponent<Enemy>().SetWaypoints(waypoints);
                 enemies[spawnIndex] = enemy;
                 spawnIndex++;
                 spawnInterval = originalSpawnInterval;
