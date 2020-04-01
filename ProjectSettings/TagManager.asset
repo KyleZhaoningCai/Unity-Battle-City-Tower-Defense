@@ -3,7 +3,17 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - BulletSpawn
+  - Wall
+  - Base
+  - DestroyedBase
+  - WallButton
+  - Enemy
+  - EnemyRange
+  - WallRange
+  - EnemyBullet
+  - CheatButton
   layers:
   - Default
   - TransparentFX
@@ -13,8 +23,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - EnemyBullet
+  - Enemy
   - 
   - 
   - 
