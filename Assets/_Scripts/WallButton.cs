@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WallButton : MonoBehaviour
 {
@@ -40,6 +41,10 @@ public class WallButton : MonoBehaviour
                     }
                 }
             }
+        }
+        else
+        {
+            gameController.showMessage("Cannot Place Wall Now");
         }
     }
 }

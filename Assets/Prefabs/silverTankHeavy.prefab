@@ -252,7 +252,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletSpawnPoint: {fileID: 835177017358897845}
-  speed: 0.8
+  speed: 1
   bulletSpeed: 3
   bulletObject: {fileID: 1818330250851227215, guid: e532ca64231684c9c9445aca35f1d1ba,
     type: 3}

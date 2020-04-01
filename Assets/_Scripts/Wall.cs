@@ -13,6 +13,7 @@ public class Wall : MonoBehaviour
     void Start()
     {
         gameController = FindObjectOfType<GameController>();
+        transform.position = new Vector3(transform.position.x, transform.position.y, 0);
     }
 
     // Update is called once per frame

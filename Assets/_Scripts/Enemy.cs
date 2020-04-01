@@ -61,6 +61,10 @@ public class Enemy : MonoBehaviour
             }
             else if (Vector2.Distance(transform.position, currentWaypoint) < 0.01 && waypointIndex == waypoints.Length)
             {
+                if (GetComponent<Animator>().parameterCount > 0)
+                {
+                    GetComponent<Animator>().SetInteger("tankState", 1);
+                }  
                 Destroy(transform.GetChild(1).gameObject);
                 isFiring = true;
                 RotateTowards(baseObject.transform.position);
@@ -68,7 +72,10 @@ public class Enemy : MonoBehaviour
         }
         else if (isFiring || isStopped)
         {
-            GetComponent<Animator>().speed = 0;
+            if (GetComponent<Animator>().parameterCount == 0)
+            {
+                GetComponent<Animator>().speed = 0;
+            }
             if (isFiring)
             {
                 fireInterval -= Time.deltaTime;
@@ -122,6 +129,10 @@ public class Enemy : MonoBehaviour
     {
         if (collision.CompareTag("WallRange"))
         {
+            if (GetComponent<Animator>().parameterCount > 0)
+            {
+                GetComponent<Animator>().SetInteger("tankState", 1);
+            }
             RotateTowards(collision.transform.position);
             isFiring = true;
         }
@@ -135,6 +146,10 @@ public class Enemy : MonoBehaviour
     {
         if (collision.CompareTag("WallRange"))
         {
+            if (GetComponent<Animator>().parameterCount > 0)
+            {
+                GetComponent<Animator>().SetInteger("tankState", 0);
+            }
             isFiring = false;
         }
         else if (collision.CompareTag("EnemyRange"))

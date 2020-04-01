@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlaceWall : MonoBehaviour
 {
 
-    public GameObject wall;
     public GameObject[] wallPlaceholders;
 
     private GameController gameController;
@@ -29,17 +28,7 @@ public class PlaceWall : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            for (int i = 0; i < wallPlaceholders.Length; i++)
-            {
-                if (transform.position == wallPlaceholders[i].transform.position)
-                {
-                    gameController.hasWall[i] = true;
-                    gameObject.SetActive(false);
-                    Instantiate(wall, new Vector2(transform.position.x, transform.position.y), Quaternion.identity);
-                    wallButton.ShowWallPlaceholders();
-                    break;
-                }
-            }
+            gameController.player.GetComponent<Player>().SetTask("PlaceWall", transform.position);
         }
     }
 }
