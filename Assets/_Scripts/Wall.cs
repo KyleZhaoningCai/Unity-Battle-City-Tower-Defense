@@ -4,21 +4,21 @@ using UnityEngine;
 
 public class Wall : MonoBehaviour
 {
-    private int hp;
+    public GameObject explosion;
+    public int hp;
+
+    private GameController gameController;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        gameController = FindObjectOfType<GameController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (hp <= 0)
-        {
-            Destroy(gameObject);
-        }    
+         
     }
 
     public void SetHp(int wallHp)
@@ -29,5 +29,18 @@ public class Wall : MonoBehaviour
     public void DamageWall(int bulletDamamge)
     {
         hp -= bulletDamamge;
+        if (hp <= 0)
+        {
+            for (int i = 0; i < gameController.wallPlaceholders.Length; i++)
+            {
+                if (transform.position == gameController.wallPlaceholders[i].transform.position)
+                {
+                    gameController.hasWall[i] = false;
+                    break;
+                }
+            }
+            Instantiate(explosion, new Vector2(transform.position.x, transform.position.y), Quaternion.identity);
+            Destroy(gameObject);
+        }
     }
 }

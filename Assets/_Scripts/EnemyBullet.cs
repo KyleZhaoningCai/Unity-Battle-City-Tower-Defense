@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyBullet : MonoBehaviour
 {
+    public GameObject bulletHit;
+    public GameObject explosion;
 
     private int damage;
     private float selfDestroyTimer;
@@ -31,20 +33,26 @@ public class EnemyBullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Wall"))
+        if (collision.CompareTag("Wall") || collision.CompareTag("Base") || collision.CompareTag("DestroyedBase"))
         {
-            collision.GetComponent<Wall>().DamageWall(damage);
-            Destroy(gameObject);
-        }
-        else if (collision.CompareTag("Base"))
-        {
-            Destroy(collision.gameObject);
-            Destroy(gameObject);
-            FindObjectOfType<GameController>().gameState = "gameOver";
-        }
-        else if (collision.CompareTag("DestroyedBase"))
-        {
-            Destroy(gameObject);
+            Instantiate(bulletHit, new Vector2(transform.position.x, transform.position.y), Quaternion.identity);
+            if (collision.CompareTag("Wall"))
+            {
+
+                collision.GetComponent<Wall>().DamageWall(damage);
+                Destroy(gameObject);
+            }
+            else if (collision.CompareTag("Base"))
+            {
+                Instantiate(explosion, new Vector2(transform.position.x, transform.position.y), Quaternion.identity);
+                Destroy(collision.gameObject);
+                Destroy(gameObject);
+                FindObjectOfType<GameController>().gameState = "gameOver";
+            }
+            else if (collision.CompareTag("DestroyedBase"))
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

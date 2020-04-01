@@ -5,18 +5,20 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public GameObject bulletSpawnPoint;
-    public int speed;
-    public int bulletSpeed;
+    public float speed;
+    public float bulletSpeed;
     public GameObject bulletObject;
-    public float fireInterfal = 1;
+    public float fireInterval = 1;
     public int damage;
     public int hp;
+    public GameObject explosion;
 
     private GameObject[] waypoints;
     private GameObject finalWaypoint;
     private int waypointIndex;
     private Vector2 currentWaypoint;
     private bool isFiring;
+    private bool isStopped;
     private GameObject baseObject;
     private GameObject target;
     private float originalFireInterval;
@@ -32,15 +34,17 @@ public class Enemy : MonoBehaviour
         currentWaypoint = waypoints[waypointIndex].transform.position;
         RotateTowards(currentWaypoint);
         isFiring = false;
-        originalFireInterval = fireInterfal;
-        fireInterfal = 0;
+        isStopped = false;
+        originalFireInterval = fireInterval;
+        fireInterval = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!isFiring)
+        if (!isFiring && !isStopped)
         {
+            fireInterval = 0;
             GetComponent<Animator>().speed = 1;
             MoveToPosition(currentWaypoint);
             if (Vector2.Distance(transform.position, currentWaypoint) < 0.01 && waypointIndex < waypoints.Length - 1)
@@ -57,18 +61,22 @@ public class Enemy : MonoBehaviour
             }
             else if (Vector2.Distance(transform.position, currentWaypoint) < 0.01 && waypointIndex == waypoints.Length)
             {
+                Destroy(transform.GetChild(1).gameObject);
                 isFiring = true;
                 RotateTowards(baseObject.transform.position);
             }
         }
-        else
+        else if (isFiring || isStopped)
         {
             GetComponent<Animator>().speed = 0;
-            fireInterfal -= Time.deltaTime;
-            if (fireInterfal <= 0)
+            if (isFiring)
             {
-                FireBullet();
-                fireInterfal = originalFireInterval;
+                fireInterval -= Time.deltaTime;
+                if (fireInterval <= 0)
+                {
+                    FireBullet();
+                    fireInterval = originalFireInterval;
+                }
             }
         }
     }
@@ -76,6 +84,16 @@ public class Enemy : MonoBehaviour
     public void SetFinalWaypoint(GameObject finalWaypointGameObject)
     {
         finalWaypoint = finalWaypointGameObject;
+    }
+
+    public void ReduceHp(int damageDealt)
+    {
+        hp -= damageDealt;
+        if (hp <= 0)
+        {
+            Instantiate(explosion, new Vector2(transform.position.x, transform.position.y), Quaternion.identity);
+            Destroy(gameObject);
+        }
     }
 
     private void MoveToPosition(Vector2 position)
@@ -102,17 +120,26 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Wall"))
+        if (collision.CompareTag("WallRange"))
         {
+            RotateTowards(collision.transform.position);
             isFiring = true;
+        }
+        else if (collision.CompareTag("EnemyRange"))
+        {
+            isStopped = true;
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Wall"))
+        if (collision.CompareTag("WallRange"))
         {
             isFiring = false;
+        }
+        else if (collision.CompareTag("EnemyRange"))
+        {
+            isStopped = false;
         }
     }
 }
