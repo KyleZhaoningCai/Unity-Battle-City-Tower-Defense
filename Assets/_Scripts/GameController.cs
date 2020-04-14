@@ -18,6 +18,8 @@ public class GameController : MonoBehaviour
     public GameObject baseObject;
     public bool[] hasWall;
     public GameObject[] wallPlaceholders;
+
+    public GameObject[] tankPlaceholders;
     public GameObject player;
     public GameObject uiSystemMessage;
     public GameObject uiMessage;
