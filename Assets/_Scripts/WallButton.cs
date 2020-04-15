@@ -11,6 +11,15 @@ public class WallButton : MonoBehaviour
         gameController = FindObjectOfType<GameController>();
     }
 
+    void OnMouseOver()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            gameController.pushToCheatString("W");
+            ShowWallPlaceholders();
+        }
+    }
+
     public void ShowWallPlaceholders()
     {
         if (gameController.waveInterval > 0)

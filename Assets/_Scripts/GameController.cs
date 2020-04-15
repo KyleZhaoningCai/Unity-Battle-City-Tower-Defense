@@ -18,7 +18,13 @@ public class GameController : MonoBehaviour
     public GameObject baseObject;
     public bool[] hasWall;
     public GameObject[] wallPlaceholders;
-    public GameObject player;
+    public GameObject[] playerTankPlaceholders;
+    public bool[] hasTank;
+    public GameObject playerTank;
+    public GameObject playerTankCannon;
+    public GameObject playerTankFast;
+    public GameObject playerTankHeavy;
+    public GameObject wall;
     public GameObject uiSystemMessage;
     public GameObject uiMessage;
 
@@ -29,6 +35,7 @@ public class GameController : MonoBehaviour
     private int spawnIndex;
     private float messageDuration;
     private float originalMessageDuration;
+    private string cheatString;
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +51,7 @@ public class GameController : MonoBehaviour
         FindObjectOfType<Wall>().GetComponent<Wall>().SetHp(baseWallHp);
         messageDuration = 3f;
         originalMessageDuration = messageDuration;
+        cheatString = "";
     }
 
     // Update is called once per frame
@@ -97,5 +105,22 @@ public class GameController : MonoBehaviour
     {
         uiMessage.GetComponent<Text>().text = message;
         messageDuration = originalMessageDuration;
+    }
+
+    public void pushToCheatString(string button)
+    { 
+        cheatString += button;
+        if (cheatString.Length > 7)
+        {
+            cheatString = cheatString.Substring(1);
+        }
+        if (cheatString == "WWHHWHW")
+        {
+            GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+            for (int i = 0; i < enemies.Length; i++)
+            {
+                enemies[i].GetComponent<Enemy>().ReduceHp(9999);
+            }
+        }
     }
 }

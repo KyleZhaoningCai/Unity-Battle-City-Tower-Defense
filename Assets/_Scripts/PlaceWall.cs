@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class PlaceWall : MonoBehaviour
 {
-
-    public GameObject[] wallPlaceholders;
-    public GameObject wall;
-
     private GameController gameController;
     private WallButton wallButton;
 
@@ -29,13 +25,13 @@ public class PlaceWall : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            for (int i = 0; i < wallPlaceholders.Length; i++)
+            for (int i = 0; i < gameController.wallPlaceholders.Length; i++)
             {
-                if (transform.position == wallPlaceholders[i].transform.position)
+                if (transform.position == gameController.wallPlaceholders[i].transform.position)
                 {
                     gameController.hasWall[i] = true;
-                    wallPlaceholders[i].SetActive(false);
-                    Instantiate(wall, new Vector2(wallPlaceholders[i].transform.position.x, wallPlaceholders[i].transform.position.y), Quaternion.identity);
+                    gameController.wallPlaceholders[i].SetActive(false);
+                    Instantiate(gameController.wall, new Vector2(gameController.wallPlaceholders[i].transform.position.x, gameController.wallPlaceholders[i].transform.position.y), Quaternion.identity);
                     wallButton.ShowWallPlaceholders();
                     break;
                 }

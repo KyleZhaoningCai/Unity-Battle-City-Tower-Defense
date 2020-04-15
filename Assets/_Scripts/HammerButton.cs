@@ -4,8 +4,18 @@ using UnityEngine;
 
 public class HammerButton : MonoBehaviour
 {
-    public void OnHammerButtonClick()
+    private GameController gameController;
+
+    void Start()
     {
-        print("click!");
+        gameController = FindObjectOfType<GameController>();
+    }
+
+    void OnMouseOver()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            gameController.pushToCheatString("H");
+        }
     }
 }
