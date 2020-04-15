@@ -6,6 +6,7 @@ public class PlaceWall : MonoBehaviour
 {
 
     public GameObject[] wallPlaceholders;
+    public GameObject wall;
 
     private GameController gameController;
     private WallButton wallButton;
@@ -28,7 +29,17 @@ public class PlaceWall : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            gameController.player.GetComponent<Player>().SetTask("PlaceWall", transform.position);
+            for (int i = 0; i < wallPlaceholders.Length; i++)
+            {
+                if (transform.position == wallPlaceholders[i].transform.position)
+                {
+                    gameController.hasWall[i] = true;
+                    wallPlaceholders[i].SetActive(false);
+                    Instantiate(wall, new Vector2(wallPlaceholders[i].transform.position.x, wallPlaceholders[i].transform.position.y), Quaternion.identity);
+                    wallButton.ShowWallPlaceholders();
+                    break;
+                }
+            }
         }
     }
 }

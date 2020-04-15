@@ -53,10 +53,6 @@ public class GameController : MonoBehaviour
         if (waveInterval <= 0)
         {
             uiSystemMessage.GetComponent<Text>().text = "";
-            if (player.GetComponent<Player>().GetTask() == "PlaceWall")
-            {
-                player.GetComponent<Player>().SetTask("Idle", new Vector2(0, 0));
-            }
             for (int i = 0; i < wallPlaceholders.Length; i++)
             {
                 wallPlaceholders[i].SetActive(false);
