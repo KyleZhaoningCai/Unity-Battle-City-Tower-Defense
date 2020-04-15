@@ -27,6 +27,7 @@ public class GameController : MonoBehaviour
     public GameObject wall;
     public GameObject uiSystemMessage;
     public GameObject uiMessage;
+    public int tankToPlace;
 
     private int enemiesPerWave;
     private int waveNumber;
@@ -40,8 +41,16 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        hasWall = new bool[] { false, false, false, false, false };
-
+        hasWall = new bool[5];
+        hasTank = new bool[30];
+        for (int i = 0; i < hasTank.Length; i++)
+        {
+            if (i < hasWall.Length)
+            {
+                hasWall[i] = false;
+            }
+            hasTank[i] = false;
+        }
         enemiesPerWave = 7;
         waveNumber = 0;
         originalWaveInterval = waveInterval;

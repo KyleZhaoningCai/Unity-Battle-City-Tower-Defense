@@ -8,12 +8,12 @@ TagManager:
   - Wall
   - Base
   - DestroyedBase
-  - WallButton
   - Enemy
   - EnemyRange
   - WallRange
   - EnemyBullet
-  - CheatButton
+  - PlayerBullet
+  - Button
   layers:
   - Default
   - TransparentFX
@@ -25,8 +25,8 @@ TagManager:
   - 
   - EnemyBullet
   - Enemy
-  - 
-  - 
+  - Button
+  - GameObject
   - 
   - 
   - 
