@@ -12,6 +12,7 @@ public class Enemy : MonoBehaviour
     public int damage;
     public int hp;
     public GameObject explosion;
+    public int bounty;
 
     private GameObject[] waypoints;
     private GameObject finalWaypoint;
@@ -98,6 +99,7 @@ public class Enemy : MonoBehaviour
         hp -= damageDealt;
         if (hp <= 0)
         {
+            gameController.coins += bounty;
             Instantiate(explosion, new Vector2(transform.position.x, transform.position.y), Quaternion.identity);
             Destroy(gameObject);
         }

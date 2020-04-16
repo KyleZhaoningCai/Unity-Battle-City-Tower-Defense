@@ -21,9 +21,10 @@ public class PlaceWall : MonoBehaviour
 
     }
 
-    void OnMouseOver()
+    void OnMouseDown()
     {
-        if (Input.GetMouseButtonDown(0))
+        gameController.pushToCheatString("P");
+        if (gameController.coins >= 400)
         {
             for (int i = 0; i < gameController.wallPlaceholders.Length; i++)
             {
@@ -33,9 +34,14 @@ public class PlaceWall : MonoBehaviour
                     gameController.wallPlaceholders[i].SetActive(false);
                     Instantiate(gameController.wall, new Vector2(gameController.wallPlaceholders[i].transform.position.x, gameController.wallPlaceholders[i].transform.position.y), Quaternion.identity);
                     wallButton.ShowWallPlaceholders();
+                    gameController.coins -= 400;
                     break;
                 }
             }
+        }
+        else
+        {
+            gameController.showMessage("INSUFFICIENT COINS");
         }
     }
 }

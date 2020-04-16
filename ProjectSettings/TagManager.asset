@@ -14,6 +14,7 @@ TagManager:
   - EnemyBullet
   - PlayerBullet
   - Button
+  - DontDestroy
   layers:
   - Default
   - TransparentFX

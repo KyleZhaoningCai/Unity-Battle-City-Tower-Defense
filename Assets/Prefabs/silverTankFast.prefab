@@ -170,10 +170,11 @@ MonoBehaviour:
   bulletObject: {fileID: 1818330250851227215, guid: e532ca64231684c9c9445aca35f1d1ba,
     type: 3}
   fireInterval: 0.9
-  damage: 10
-  hp: 50
+  damage: 20
+  hp: 60
   explosion: {fileID: 998749343508461570, guid: 86676243e5b5649bf847f34c54b908b8,
     type: 3}
+  bounty: 100
 --- !u!1 &4780267567435578748
 GameObject:
   m_ObjectHideFlags: 0

@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76772088042714f49bcdd6a94b4e502c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 30
+  damage: 42
   bulletSpeed: 15
   bullet: {fileID: 8832707335965489000, guid: 749655da5f8a84173bde0ff2f6b2bdb5, type: 3}
   spawnPoint: {fileID: 3703871128395659724}

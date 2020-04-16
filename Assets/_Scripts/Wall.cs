@@ -34,7 +34,7 @@ public class Wall : MonoBehaviour
         {
             for (int i = 0; i < gameController.wallPlaceholders.Length; i++)
             {
-                if (transform.position == gameController.wallPlaceholders[i].transform.position)
+                if (transform.position.x == gameController.wallPlaceholders[i].transform.position.x && transform.position.y == gameController.wallPlaceholders[i].transform.position.y)
                 {
                     gameController.hasWall[i] = false;
                     break;

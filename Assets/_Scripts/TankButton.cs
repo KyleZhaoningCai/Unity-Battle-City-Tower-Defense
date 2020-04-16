@@ -16,12 +16,13 @@ public class TankButton : MonoBehaviour
 
     void OnMouseDown()
     {
+        for (int i = 0; i < gameController.playerTankPlaceholders.Length; i++)
+        {
+            gameController.playerTankPlaceholders[i].SetActive(false);
+        }
+        gameController.isHammering = false;
         if (gameController.tankToPlace == tankToPlace)
         {
-            for (int i = 0; i < gameController.playerTankPlaceholders.Length; i++)
-            {
-                gameController.playerTankPlaceholders[i].SetActive(false);
-            }
             gameController.tankToPlace = 0;
         }
         else

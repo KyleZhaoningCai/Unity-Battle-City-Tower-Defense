@@ -252,12 +252,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletSpawnPoint: {fileID: 835177017358897845}
-  speed: 1
+  speed: 0.9
   bulletSpeed: 3
   bulletObject: {fileID: 1818330250851227215, guid: e532ca64231684c9c9445aca35f1d1ba,
     type: 3}
   fireInterval: 1
-  damage: 20
-  hp: 80
+  damage: 30
+  hp: 140
   explosion: {fileID: 998749343508461570, guid: 86676243e5b5649bf847f34c54b908b8,
     type: 3}
+  bounty: 150

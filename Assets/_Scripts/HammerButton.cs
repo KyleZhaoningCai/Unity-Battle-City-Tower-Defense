@@ -11,11 +11,29 @@ public class HammerButton : MonoBehaviour
         gameController = FindObjectOfType<GameController>();
     }
 
-    void OnMouseOver()
+    void OnMouseDown()
     {
-        if (Input.GetMouseButtonDown(0))
+        gameController.pushToCheatString("H");
+        for (int i = 0; i < gameController.playerTankPlaceholders.Length; i++)
         {
-            gameController.pushToCheatString("H");
+            gameController.playerTankPlaceholders[i].SetActive(false);
         }
+        gameController.tankToPlace = 0;
+        if (gameController.isHammering)
+        {
+            gameController.isHammering = false;
+        }
+        else
+        {
+            for (int i = 0; i < gameController.playerTankPlaceholders.Length; i++)
+            {
+                if (gameController.hasTank[i])
+                {
+                    gameController.playerTankPlaceholders[i].SetActive(true);
+                }
+            }
+            gameController.isHammering = true;
+        }
+        
     }
 }

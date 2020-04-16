@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
 
     // Global Variables
+    public GameObject baseWall;
     public int baseWallHp;
+    public int coins;
     public string gameState;
     public GameObject[] waypoints;
     public GameObject[] finalWaypoints;
@@ -28,6 +31,15 @@ public class GameController : MonoBehaviour
     public GameObject uiSystemMessage;
     public GameObject uiMessage;
     public int tankToPlace;
+    public GameObject baseHpText;
+    public GameObject coinText;
+    public float coinBagSpawn;
+    public GameObject coinBag;
+    public float coinBagSpeed;
+    public bool isHammering;
+    public GameObject[] playerTanks;
+    public GameObject explosion;
+    public GameObject dontDestroyObject;
 
     private int enemiesPerWave;
     private int waveNumber;
@@ -37,12 +49,17 @@ public class GameController : MonoBehaviour
     private float messageDuration;
     private float originalMessageDuration;
     private string cheatString;
+    private float originalCoinBagSpawn;
+    private GameObject movingCoinBag;
+    private Vector2 movingCoinBagFrom;
+    private Vector2 movingCoinBagTo;
 
     // Start is called before the first frame update
     void Start()
     {
         hasWall = new bool[5];
         hasTank = new bool[30];
+        playerTanks = new GameObject[30];
         for (int i = 0; i < hasTank.Length; i++)
         {
             if (i < hasWall.Length)
@@ -57,10 +74,14 @@ public class GameController : MonoBehaviour
         originalSpawnInterval = spawnInterval;
         spawnInterval = 0;
         spawnIndex = 0;
-        FindObjectOfType<Wall>().GetComponent<Wall>().SetHp(baseWallHp);
+        baseWall.GetComponent<Wall>().SetHp(baseWallHp);
         messageDuration = 3f;
         originalMessageDuration = messageDuration;
         cheatString = "";
+        originalCoinBagSpawn = coinBagSpawn;
+        movingCoinBag = null;
+        movingCoinBagFrom = new Vector2(0, 0);
+        movingCoinBagTo = new Vector2(0, 0);
     }
 
     // Update is called once per frame
@@ -92,9 +113,12 @@ public class GameController : MonoBehaviour
                 spawnIndex = 0;
                 waveInterval = originalWaveInterval;
                 waveNumber++;
-                if (waveNumber == enemyTypes.Length)
+                if (waveNumber == enemyTypes.Length && gameState == "gameOn")
                 {
                     gameState = "victory";
+                    dontDestroyObject.GetComponent<DontDestroyObject>().gameState = gameState;
+                    dontDestroyObject.GetComponent<DontDestroyObject>().coins = coins;
+                    SceneManager.LoadScene("Result");
                 }
             }
         }
@@ -102,12 +126,58 @@ public class GameController : MonoBehaviour
         {
             uiSystemMessage.GetComponent<Text>().text = "Next Wave In " + Mathf.RoundToInt(waveInterval) + " Seconds";
         }
+        coinBagSpawn -= Time.deltaTime;
+        if (coinBagSpawn <= 0)
+        {
+            int randomSide = Random.Range(0, 4);
+            switch (randomSide)
+            {
+                case 0:
+                    Vector2 pos1 = new Vector2(-2.7f , Random.Range(-3.75f, 3.75f));
+                    Vector2 pos2 = new Vector2(2.7f, Random.Range(-3.75f, 3.75f));
+                    movingCoinBagFrom = pos1;
+                    movingCoinBagTo = pos2;
+                    movingCoinBag = Instantiate(coinBag, movingCoinBagFrom, Quaternion.identity);
+                    break;
+                case 1:
+                    Vector2 pos3 = new Vector2(2.7f, Random.Range(-3.75f, 3.75f));
+                    Vector2 pos4 = new Vector2(-2.7f, Random.Range(-3.75f, 3.75f));
+                    movingCoinBagFrom = pos3;
+                    movingCoinBagTo = pos4;
+                    movingCoinBag = Instantiate(coinBag, movingCoinBagFrom, Quaternion.identity);
+                    break;
+                case 2:
+                    Vector2 pos5 = new Vector2(Random.Range(-2f, 2f), -5.5f);
+                    Vector2 pos6 = new Vector2(Random.Range(-2f, 2f), 5.5f);
+                    movingCoinBagFrom = pos5;
+                    movingCoinBagTo = pos6;
+                    movingCoinBag = Instantiate(coinBag, movingCoinBagFrom, Quaternion.identity);
+                    break;
+                default:
+                    Vector2 pos7 = new Vector2(Random.Range(-2f, 2f), 5.5f);
+                    Vector2 pos8 = new Vector2(Random.Range(-2f, 2f), -5.5f);
+                    movingCoinBagFrom = pos7;
+                    movingCoinBagTo = pos8;
+                    movingCoinBag = Instantiate(coinBag, movingCoinBagFrom, Quaternion.identity);
+                    break;
+            }
+            coinBagSpawn = originalCoinBagSpawn;
+        }
+        if (movingCoinBag != null)
+        {
+            movingCoinBag.transform.position = Vector2.MoveTowards(movingCoinBag.transform.position, movingCoinBagTo, coinBagSpeed * Time.deltaTime);
+            movingCoinBag.transform.position = new Vector3(movingCoinBag.transform.position.x , movingCoinBag.transform.position.y, -9.5f);
+        }
         messageDuration -= Time.deltaTime;
         if (messageDuration <= 0)
         {
             uiMessage.GetComponent<Text>().text = "";
         }
-
+        if (baseWall)
+        {
+            baseHpText.GetComponent<Text>().text = "BASE HP: " + baseWall.GetComponent<Wall>().hp;
+        }
+        coinText.GetComponent<Text>().text = "" + coins;
     }
 
     public void showMessage(string message)

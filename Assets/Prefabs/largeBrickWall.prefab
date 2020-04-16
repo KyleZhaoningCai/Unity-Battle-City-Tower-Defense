@@ -123,7 +123,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosion: {fileID: 998749343508461570, guid: 86676243e5b5649bf847f34c54b908b8,
     type: 3}
-  hp: 50
+  hp: 100
 --- !u!1 &7832617010010352276
 GameObject:
   m_ObjectHideFlags: 0
