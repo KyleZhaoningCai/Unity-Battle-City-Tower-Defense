@@ -171,7 +171,7 @@ MonoBehaviour:
     type: 3}
   fireInterval: 0.9
   damage: 40
-  hp: 440
+  hp: 480
   explosion: {fileID: 998749343508461570, guid: 86676243e5b5649bf847f34c54b908b8,
     type: 3}
   bounty: 300

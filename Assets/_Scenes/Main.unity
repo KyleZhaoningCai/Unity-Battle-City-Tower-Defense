@@ -9358,7 +9358,7 @@ MonoBehaviour:
   - {fileID: 1364761796}
   - {fileID: 1081860134}
   - {fileID: 1520513427}
-  waveInterval: 10
+  waveInterval: 15
   spawnInterval: 1
   enemyTypes:
   - {fileID: 281425139210732839, guid: a04e833007f97484193aa947981242a4, type: 3}
@@ -14800,7 +14800,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 400
+  m_Text: 300
 --- !u!222 &1878606368
 CanvasRenderer:
   m_ObjectHideFlags: 0
