@@ -1,7 +1,17 @@
-﻿using System.Collections;
+﻿/*
+ File Name: PlayerTankBasic.cs
+ Author: Zhaoning Cai, Supreet Kaur, Jiansheng Sun
+ Student ID: 300817368, 301093932, 300997240
+ Date: Apr 17, 2020
+ App Description: Battle City Tower Defense
+ Version Information: v2.0
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// This class handles the behaviour of the player tank GameObject
 public class PlayerTankBasic : MonoBehaviour
 {
     public int damage;
@@ -19,12 +29,15 @@ public class PlayerTankBasic : MonoBehaviour
         originalCooldown = cooldown;
         target = null;
         cooldown = 0;
+
+        // Make trigger collider stay event working even when GameObject is not moving
         GetComponent<Rigidbody2D>().sleepMode = RigidbodySleepMode2D.NeverSleep;
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Fire a player bullet when cooldown drops to 0
         cooldown -= Time.deltaTime;
         if (cooldown <= 0 && target != null)
         {
@@ -33,6 +46,7 @@ public class PlayerTankBasic : MonoBehaviour
         }
     }
 
+    // Rotate toward the target, then fires a bullet at the target direction
     private void FireBullet()
     {
         var offset = 270f;
@@ -48,6 +62,8 @@ public class PlayerTankBasic : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
+        // If an enemy is within the trigger collider, if this player tank has no target, set
+        // the enemy as the target
         if (collision.CompareTag("Enemy"))
         {
             if (target == null)
@@ -57,6 +73,7 @@ public class PlayerTankBasic : MonoBehaviour
         }
     }
 
+    // When a target enemy leaves the trigger collider, enemy is no longer a target 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject == target)

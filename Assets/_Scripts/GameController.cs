@@ -1,9 +1,19 @@
-﻿using System.Collections;
+﻿/*
+ File Name: GameController.cs
+ Author: Zhaoning Cai, Supreet Kaur, Jiansheng Sun
+ Student ID: 300817368, 301093932, 300997240
+ Date: Apr 17, 2020
+ App Description: Battle City Tower Defense
+ Version Information: v2.0
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+// This class handles the overall game logic
 public class GameController : MonoBehaviour
 {
 
@@ -57,9 +67,11 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        hasWall = new bool[5];
-        hasTank = new bool[30];
-        playerTanks = new GameObject[30];
+        hasWall = new bool[5]; // This array keeps track of wall existence
+        hasTank = new bool[30]; // This array keeps track of defending tank existence
+        playerTanks = new GameObject[30]; // This array holds all defending tanks
+
+        // Initialize these arrays with false values
         for (int i = 0; i < hasTank.Length; i++)
         {
             if (i < hasWall.Length)
@@ -88,16 +100,24 @@ public class GameController : MonoBehaviour
     void Update()
     {
         waveInterval -= Time.deltaTime;
+
+        // When wave interval drops to 0, spawn next wave of enemies
         if (waveInterval <= 0)
         {
+            // Clear system message
             uiSystemMessage.GetComponent<Text>().text = "";
+
+            // Turn off all wall placeholders to prevent wall placement
             for (int i = 0; i < wallPlaceholders.Length; i++)
             {
                 wallPlaceholders[i].SetActive(false);
             }
             spawnInterval -= Time.deltaTime;
+
+            // When spawn interval drops to 0 before the entire wave has spawned, spawn an enemy tank
             if (spawnInterval <= 0 && spawnIndex < enemiesPerWave && waveNumber < enemyTypes.Length)
             {
+                // If this is the last wave, change spawn index to the last to spawn only one enemy (boss)
                 if (waveNumber == enemyTypes.Length - 1)
                 {
                     spawnIndex = enemiesPerWave - 1;
@@ -107,12 +127,17 @@ public class GameController : MonoBehaviour
                 spawnIndex++;
                 spawnInterval = originalSpawnInterval;
             }
+
+            // If there is no enemy in the scene and all enemy tanks have spawned, this wave is over
             if (GameObject.FindWithTag("Enemy") == null && spawnIndex == enemiesPerWave)
             {
                 spawnInterval = 0;
                 spawnIndex = 0;
                 waveInterval = originalWaveInterval;
                 waveNumber++;
+
+                // If the last wave is over and the game is not over, the game is won, set the values of
+                // DontDestroy GameObject, then change to Result scene
                 if (waveNumber == enemyTypes.Length && gameState == "gameOn")
                 {
                     gameState = "victory";
@@ -122,16 +147,20 @@ public class GameController : MonoBehaviour
                 }
             }
         }
+        // When counting down to the next wave, set the system text to show how many seconds to next wave
         else
         {
             uiSystemMessage.GetComponent<Text>().text = "Next Wave In " + Mathf.RoundToInt(waveInterval) + " Seconds";
         }
         coinBagSpawn -= Time.deltaTime;
+
+        // When coin bag spawn timer drops to 0, spawn a quickly flying coin bag
         if (coinBagSpawn <= 0)
         {
-            int randomSide = Random.Range(0, 4);
+            int randomSide = Random.Range(0, 4); // Random which side this coin bag spawns at
             switch (randomSide)
             {
+                // For each side, random a coordinate on that side and the opposite side
                 case 0:
                     Vector2 pos1 = new Vector2(-2.7f , Random.Range(-3.75f, 3.75f));
                     Vector2 pos2 = new Vector2(2.7f, Random.Range(-3.75f, 3.75f));
@@ -163,29 +192,40 @@ public class GameController : MonoBehaviour
             }
             coinBagSpawn = originalCoinBagSpawn;
         }
+
+        // When there is a coin bag GameObject, make it fly to the target location on the opposite side
         if (movingCoinBag != null)
         {
             movingCoinBag.transform.position = Vector2.MoveTowards(movingCoinBag.transform.position, movingCoinBagTo, coinBagSpeed * Time.deltaTime);
             movingCoinBag.transform.position = new Vector3(movingCoinBag.transform.position.x , movingCoinBag.transform.position.y, -9.5f);
         }
+
+        // Make the message text disappear after a few seconds
         messageDuration -= Time.deltaTime;
         if (messageDuration <= 0)
         {
             uiMessage.GetComponent<Text>().text = "";
         }
+
+        // If the base wall is still intact, update the base HP text with the base wall HP value
         if (baseWall)
         {
             baseHpText.GetComponent<Text>().text = "BASE HP: " + baseWall.GetComponent<Wall>().hp;
         }
+
+        // Update the coins text with the coins value
         coinText.GetComponent<Text>().text = "" + coins;
     }
 
+    // Display a message
     public void showMessage(string message)
     {
         uiMessage.GetComponent<Text>().text = message;
         messageDuration = originalMessageDuration;
     }
 
+    // Add a letter representing a button click to the cheat string and check if the result matches
+    // the cheat sequence. When matched, deal 9999 damage to all enemy tanks in the scene
     public void pushToCheatString(string button)
     { 
         cheatString += button;
